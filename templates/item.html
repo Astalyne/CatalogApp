@@ -3,7 +3,8 @@
 <p>Item Id:{{item.id}}</p>
 
 <p>{{item.description}}</p>
-
+{% if 'username' in session %}
 <p><a href = "{{url_for('editItem',item_id = item.id,category_id=category_id)}}">Edit Item</a></p>
 
 <p><a href = "{{url_for('deleteItem',item_id = item.id,category_id=category_id)}}">Delete Item</a></p>
+{% endif %}

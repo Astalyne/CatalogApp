@@ -1,5 +1,17 @@
 <h1>Catalog App</h1>
+<br>
+{% if 'username' not in session %}
+
+    
+        <li><a href="{{ url_for('showLogin') }}">Login</a>
+        
+        {% else %}
+        <li><a href="{{ url_for('gdisconnect') }}">Logout</a>
 <br><br>
+<a href="{{ url_for('addItem') }}">Add Item</a>
+        {% endif %}
+<br>
+
 <h2>Categories</h2>
 
 <br>
