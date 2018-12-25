@@ -5,7 +5,7 @@ from database_setup import Base, User, Category, Item
 
 app= Flask(__name__)
 
-engine= create_engine('sqlite://catalogapp.db')
+engine= create_engine('sqlite:///catalogapp.db?check_same_thread=False')
 Base.metadata.bind = engine
 
 DBSession= sessionmaker(bind=engine)
@@ -27,13 +27,20 @@ def CatalogJSON():
 @app.route('/Categories')
 def showCategories():
     categories= session.query(Category).all()
-    return render_template('categories.html',categories=categories)
+    latest = session.query(Item).order_by(
+    Item.created_at.desc()).limit(10).all()
+    for c in latest:
+        print (c.name)
+        print ("   ")
+        print (c.id)
+    return render_template('categories.html',categories=categories,latest=latest)
     
 #Specific choose category page, Shows all items
 @app.route('/Categories/<int:category_id>')
 def showCategory(category_id):
     category= session.query(Category).filter_by(id=category_id).one()
     items= session.query(Item).filter_by(category_id=category_id).all()
+    
     return render_template('category.html',category=category,items=items)
     
 
@@ -43,7 +50,7 @@ def showCategory(category_id):
 @app.route('/Categories/<int:category_id>/<int:item_id>')
 def showItem(category_id,item_id):
     item= session.query(Item).filter_by(id=item_id).one()
-    return render_template('item.html',item=item)
+    return render_template('item.html',item=item,category_id=category_id)
 
 
 #Adds Item , takes in as input: Name description and category

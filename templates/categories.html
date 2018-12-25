@@ -1,0 +1,14 @@
+<h1>Catalog App</h1>
+<br><br>
+<h2>Categories</h2>
+
+<br>
+{%for c in categories%}
+<a href = '{{url_for('showCategory',category_id=c.id)}}'><p>{{c.name}}</p></a>
+{%endfor%}
+<br><br>
+<h3>Latest items added</h3>
+<br>
+{%for l in latest%}
+<a href = '{{url_for('showItem',category_id=l.id,item_id=l.id)}}'><p>{{l.name}}</p></a>
+{%endfor%}
