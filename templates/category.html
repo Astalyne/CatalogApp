@@ -1,0 +1,8 @@
+<h1>Catalog App</h1>
+<br><br>
+<h2>{{category.name}}</h2>
+
+<br>
+{%for l in items%}
+<a href = '{{url_for('showItem',category_id=l.id,item_id=l.id)}}'><p>{{l.name}}</p></a>
+{%endfor%}

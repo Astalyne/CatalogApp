@@ -18,7 +18,16 @@ session=DBSession()
 #Returns JSON endpoint
 @app.route('/JSON')
 def CatalogJSON():
-    return "Json"
+    all =[]
+    categories= session.query(Category).all()
+    for i in categories:
+        item=session.query(Item).filter_by(category_id=i.id).all()
+        all.append(i.serialize)
+        all[-1]['items']=[s.serialize for s in item]
+    return jsonify(categories=all)
+
+
+    return jsonify(categories=all)
 
 
 #RootPage,Shows Catalog Categories and Recent Items
@@ -72,16 +81,35 @@ def addItem(category_id):
 #Edits item ( name desc and category)
 @app.route('/Categories/<int:category_id>/<int:item_id>/delete',
 methods =['GET','POST'])
-def deleteItem():
-    return "this is to delete item"
+def deleteItem(category_id  ,item_id):
+    item = session.query(Item).filter_by(id=item_id).one()
+
+    if request.method== 'POST':
+        session.delete(item)
+        session.commit()
+        return redirect(url_for('showCategory',category_id=category_id))
+    return render_template('deleteItem.html',item=item)
 
 
 
 #Deletes item 
-@app.route('/Categories/<int:category_id>/<int:item_id>/delete',
+@app.route('/Categories/<int:category_id>/<int:item_id>/edit',
 methods =['GET','POST'])
-def editItem():
-    return "this is editing page"
+def editItem(category_id,item_id):
+    item = session.query(Item).filter_by(id=item_id).one()
+
+    if request.method=='POST':
+        if request.form['name']:
+            item.name = request.form['name']
+        if request.form['description']:
+            item.description = request.form['description']
+        session.add(item)
+        session.commit()
+        return redirect(url_for('showCategory', category_id=category_id))
+    else:
+        return render_template('editItem.html', category_id=category_id, item_id=item_id, item=item)
+
+
 
 
 
