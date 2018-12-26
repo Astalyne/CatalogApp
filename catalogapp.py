@@ -195,11 +195,7 @@ def addItem():
         return redirect(url_for('showCategories'))
     categories = session.query(Category).all()
     if request.method =='POST':
-        if item.creator(s_user_id/creator_email != login_session['user_id']/user_session['user']['email']):
-            return "<script>function myFunction() {alert('You\
-                are not authorized to delete this item.\
-                Please create your own item in order\
-                to delete.');}</script><body onload='myFunction()'>"
+        
         newitem = Item(name=request.form['name'],
         description = request.form['description'],
         category_id=int(request.form['category']),
@@ -220,11 +216,7 @@ def deleteItem(category_id, item_id):
         return redirect(url_for('showCategories'))
     item = session.query(Item).filter_by(id=item_id).one()
     if request.method == 'POST':
-        if item.creator(s_user_id/creator_email != login_session['user_id']/user_session['user']['email']):
-            return "<script>function myFunction() {alert('You\
-                are not authorized to delete this item.\
-                Please create your own item in order\
-                to delete.');}</script><body onload='myFunction()'>"
+      
         session.delete(item)
         session.commit()
         return redirect(url_for('showCategory', category_id=category_id))
@@ -241,11 +233,7 @@ def editItem(category_id, item_id):
     item = session.query(Item).filter_by(id=item_id).one()
 
     if request.method == 'POST':
-        if item.creator(s_user_id/creator_email != login_session['user_id']/user_session['user']['email']):
-            return "<script>function myFunction() {alert('You\
-                are not authorized to delete this item.\
-                Please create your own item in order\
-                to delete.');}</script><body onload='myFunction()'>"
+        
 
         if request.form['name']:
             item.name = request.form['name']
