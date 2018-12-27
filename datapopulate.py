@@ -21,10 +21,11 @@ session.add(category3)
 session.add(category4)
 session.add(category5)
 session.commit()
-
+user1 = User(name="User1", email="User@gmail.com")
 item1 = Item(name="German Guitar",
              description="Classic Germany guitar.",category=category1,
              created_at=datetime.datetime.now()
+             ,user=user1
             )
 # item6 = Item(name="  Guitar",
 #              description=" guitar.",category=category2,
@@ -32,19 +33,19 @@ item1 = Item(name="German Guitar",
 #             )
 
 item2 = Item(name="Scottish Guitar",
-             description="Scotland made this beauty and it tastes great.",category=category2,
+             description="Scotland made this beauty and it tastes great.",category=category2,user=user1,
              created_at=datetime.datetime.now())
 
 item3 = Item(name="The One Guitar",
-             description="A guitar that works.",category=category3,
+             description="A guitar that works.",category=category3,user=user1,
              created_at=datetime.datetime.now())
 
 item4 = Item(name="Unknown Brand",
-             description="Found in a ditch",category=category4,
+             description="Found in a ditch",category=category4,user=user1,
              created_at=datetime.datetime.now())
 
 item5 = Item(name="Boom Drumsticks",
-             description="BarumCHat",category=category5,
+             description="BarumCHat",category=category5,user=user1,
              created_at=datetime.datetime.now())
 session.add(item1)
 session.add(item2)

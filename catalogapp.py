@@ -84,7 +84,10 @@ def gconnect():
     login_session['username'] = data['name']
     login_session['picture'] = data['picture']
     login_session['email'] = data['email']
-
+    user_id = UI(login_session['email'])
+    if not user_id:
+        user_id = newUser(login_session)
+    login_session['user_id'] = user_id
     output = ''
     output += '<h1>Welcome, '
     output += login_session['username']
@@ -101,7 +104,20 @@ engine = create_engine('sqlite:///catalogapp.db?check_same_thread=False')
 Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
+def UI(email):
+    try:
+        u = session.query(User).filter_by(email=email).one()
+        return u.id
+    except:
+        return None
 
+def newUser(s):
+    newU = User(name=s['username'],
+                email=s['email'])
+    session.add(newU)
+    session.flush()
+    session.commit()
+    return newU.id
 
 @app.route('/login')
 def showLogin():
@@ -199,7 +215,9 @@ def addItem():
         newitem = Item(name=request.form['name'],
         description = request.form['description'],
         category_id=int(request.form['category']),
-        created_at=datetime.datetime.now())
+        created_at=datetime.datetime.now(),
+        user_id=login_session['user_id'])
+
         session.add(newitem)
         session.commit()
         return redirect(url_for(
@@ -214,9 +232,13 @@ def addItem():
 def deleteItem(category_id, item_id):
     if 'username' not in login_session:
         return redirect(url_for('showCategories'))
+
+    
     item = session.query(Item).filter_by(id=item_id).one()
+    if item.user_id != login_session['user_id']:
+        return redirect(
+            url_for('showCategory', category_id=category_id))
     if request.method == 'POST':
-      
         session.delete(item)
         session.commit()
         return redirect(url_for('showCategory', category_id=category_id))
@@ -227,14 +249,17 @@ def deleteItem(category_id, item_id):
 @app.route(
     '/Categories/<int:category_id>/<int:item_id>/edit',methods=['GET', 'POST'])
 def editItem(category_id, item_id):
-    
+
     if 'username' not in login_session:
         return redirect(url_for('showCategories'))
     item = session.query(Item).filter_by(id=item_id).one()
 
-    if request.method == 'POST':
-        
+    if item.user_id != login_session['user_id']:
+        return redirect(
+            url_for('showCategory', category_id=category_id))
 
+
+    if request.method == 'POST':
         if request.form['name']:
             item.name = request.form['name']
         if request.form['description']:
