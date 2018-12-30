@@ -1,0 +1,35 @@
+<style>
+    body {
+            background-color:lightgray;
+    }
+    h1,h2,h3{
+            border: 2px solid darkblue;
+            border-radius: 5px;
+            text-align:center;
+    }
+    a {
+            text-align:center;
+            background-color:lightgreen;
+            
+    }
+    
+    
+    
+    </style>
+<html>
+<h1>Edit Item {{item.name}}</h1>
+<form action = '#' method = 'post'>
+Name:
+<input type ='text' name='name' placeholder ='{{item.name}}'>
+<br>
+Description:
+<input type = 'text' name='description' placeholder ='{{item.Description}}'>
+<br>
+<input type='submit' value ='Edit'>
+
+
+</form>
+
+
+
+</html>

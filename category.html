@@ -1,0 +1,26 @@
+<h1>Catalog App</h1>
+<style>
+    body {
+            background-color:lightgray;
+    }
+    h1,h2,h3{
+            border: 2px solid darkblue;
+            border-radius: 5px;
+            text-align:center;
+    }
+    a {
+            text-align:center;
+            background-color:lightgreen;
+            
+    }
+    
+    
+    
+    </style>
+<br><br>
+<h2>{{category.name}}</h2>
+
+<br>
+{%for l in items%}
+<a href = '{{url_for('showItem',category_id=l.id,item_id=l.id)}}'><p>{{l.name}}</p></a>
+{%endfor%}

@@ -1,0 +1,36 @@
+<style>
+    body {
+            background-color:lightgray;
+    }
+    h1,h2,h3{
+            border: 2px solid darkblue;
+            border-radius: 5px;
+            text-align:center;
+    }
+    a {
+            text-align:center;
+            background-color:lightgreen;
+            
+    }
+    
+    
+    
+    </style>
+<form action="#" method = "post">
+    Category:
+    <select name="category" required>
+        {% for i in categories %}
+            <option value="{{ i.id }}">{{ i.name }}</option>
+        {% endfor %}
+        </select>
+        <br>
+    Name:
+    <input type ="text" maxlength="100" name="name">
+    <br><br>
+    Description:
+    <textarea name="description" placeholder="Item description" required></textarea>
+
+    <div class="padding-bottom"></div>
+    <button type="submit" id="submit" type="submit">Create</button>
+    
+</form>
